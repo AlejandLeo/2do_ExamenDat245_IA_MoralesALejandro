@@ -23,12 +23,15 @@ nroDist = 5
 
 def evalDistance(individual):
   suma=0
-  for i in range(len(individual)):
-    if i==len(individual)-1:
-      suma=suma+distancia[individual[i]][ individual[0]]
-    else:
-      suma=suma+distancia[individual[i]][ individual[i+1]]
-  return suma,
+  if(individual[0]==0):
+      for i in range(len(individual)):
+        if i==len(individual)-1:
+          suma=suma+distancia[individual[i]][ individual[0]]
+        else:
+          suma=suma+distancia[individual[i]][ individual[i+1]]        
+      return suma,
+  else:
+      return 1000,
 
 
 creator.create("FitnessMin", base.Fitness, weights=(-1.0,))
@@ -48,7 +51,7 @@ toolbox.register("population", tools.initRepeat, list, toolbox.individual)
 toolbox.register("evaluate", evalDistance)
 toolbox.register("mate", tools.cxPartialyMatched)
 toolbox.register("mutate", tools.mutShuffleIndexes, indpb=2.0)
-toolbox.register("select", tools.selTournament, tournsize=3)
+toolbox.register("select", tools.selTournament, tournsize=10)
 
 def main(seed=0):
     random.seed(seed)
@@ -56,13 +59,12 @@ def main(seed=0):
     pop = toolbox.population(n=300)
     hof = tools.HallOfFame(1)
     stats = tools.Statistics(lambda ind: ind.fitness.values)
-    stats.register("Avg", numpy.mean)
-    stats.register("Std", numpy.std)
+    #stats.register("Avg", numpy.mean)
+    #stats.register("Std", numpy.std)
     stats.register("Min", numpy.min)
-    stats.register("Max", numpy.max)
+    #stats.register("Max", numpy.max)
 
-    algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=10, stats=stats,
-                        halloffame=hof, verbose=True)
+    algorithms.eaSimple(pop, toolbox, cxpb=0.5, mutpb=0.2, ngen=10, stats=stats, halloffame=hof, verbose=True)
 
     return pop, stats, hof
 
