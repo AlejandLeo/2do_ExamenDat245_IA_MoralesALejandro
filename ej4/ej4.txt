@@ -1,0 +1,21 @@
+Si seguimos la logica o funcionamiento de lasa redes neuronales
+podremos llegar a un estimado o una solución orientada en estos
+conceptos:
+Se entiendo como "simulado-recocido", a un concepto usado
+en el contexto de redes neuronales, que hace referencia
+al proceso de metalurgia, donde para crear una buena pieza
+de metal primero se debe moldear la pieza a grandes temperaturas
+donde el metal no es el mas optimo para cualquier uso, pero a 
+medida que se va moldeando y enfriando el metal se va adecuando
+a una forma más óptima y útil del metal.
+Dentro de este contexto tiene una similitud en cuanto a una red
+neuronal donde ,dependiendo del punto de vista, se obtiene un
+error o perdida de precisión respecto a un resultado predicho
+de una red, pero que a medida que van concurriendo las epocas
+este parametro va disminuyendo hasta un punto, donde la predicción
+o resultado de la red neuronal ya es útil y aproximadamente correcta,
+y bueno en este caso podriamos manejar este parámetro de perdida o error
+como un indicador de que tan efectivo es un resultado, que en un inicio
+este parámetro no sería el óptimo,dependiendo si buscamos máximizar o 
+minimizar el resultado, pero a medida que va pasando las épocas
+este poco a poco tendría un resultado óptimo. 
