@@ -7,18 +7,27 @@ from deap import base
 from deap import creator
 from deap import tools
 
-distancia = numpy.array([[0,2,4,3,6],[2,0,4,3,3],[4,4,0,7,3],[3,3,7,0,3],[6,3,3,3,0]])
+distancia = numpy.array=[
+    [0 , 7 , 9 , 8 , 20],
+    [7 , 0 , 10 , 4 , 11],
+    [9 , 10 , 0 , 15 , 5],
+    [8 , 4 , 15 , 0 , 17],
+    [20 , 11 , 5 , 17 , 0]
+    ]
+
+col=['A','B','C','D','E']
+fil=['A','B','C','D','E']
 
 #Problem parameter
-NB_DISTANCE = 5
+nroDist = 5
 
 def evalDistance(individual):
   suma=0
   for i in range(len(individual)):
     if i==len(individual)-1:
-      suma=suma+distancia[individual[i], individual[0]]
+      suma=suma+distancia[individual[i]][ individual[0]]
     else:
-      suma=suma+distancia[individual[i], individual[i+1]]
+      suma=suma+distancia[individual[i]][ individual[i+1]]
   return suma,
 
 
@@ -28,7 +37,7 @@ creator.create("Individual", list, fitness=creator.FitnessMin)
 #Since there is only one queen per line,
 #individual are represented by a permutation
 toolbox = base.Toolbox()
-toolbox.register("permutation", random.sample, range(NB_DISTANCE), NB_DISTANCE)
+toolbox.register("permutation", random.sample, range(nroDist), nroDist)
 
 #Structure initializers
 #An individual is a list that represents the position of each queen.
@@ -58,4 +67,12 @@ def main(seed=0):
     return pop, stats, hof
 
 if __name__ == "__main__":
-    main()
+    pop, stats, hof=main()
+    for i in hof:
+        hofA=[]
+        y=[]
+        for j in i:
+            y.append(fil[j])
+        hofA.append(y)
+    for i in range(len(hof)):
+        print(hof[i],hofA[i],evalDistance(hof[i]))
