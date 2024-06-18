@@ -204,17 +204,23 @@ from sklearn import datasets
 datos = datasets.load_iris()
 datosX=datos.data
 datosY=datos.target
+
+#preparar datos
+from sklearn.model_selection import train_test_split
+entrenarX, testX, entrenarY, testY = train_test_split(datosX, datosY, test_size=0.3)
+
+
 # Entrenar
-
-#data = np.array([ [-1, -1], [2, 1], [-2, 3], [2, 2] ])
-#y_trues = np.array([ 1, 0, 0, 1 ])
-
 data = datosX
 y_trues = datosY
 
-mired = redNeuronal()
-mired.train(data, y_trues)
+red = redNeuronal()
+red.train(datosX, datosY)
+#red.train(entrenarX, entrenarY)
 
 # Predecir
-data1 = np.array([4.0,3.5,1.4,0.7])
-print("data1: %.3f" % mired.retroalimentacion(data1))
+#data1 = np.array([4.0,3.5,1.4,0.7])
+data1 = testX
+print(data1)
+for i in data1:
+    print(f"Data {i}: {red.retroalimentacion(i):.3f}" )
