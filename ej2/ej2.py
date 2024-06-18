@@ -3,7 +3,7 @@ data = []
 # vector columnas
 column=[]
 #arch=open("heart.csv","r")
-arch=open("iris.csv","r")
+arch=open("The_Cancer_data_1500_V2.csv","r")
 
 sw=0
 for l in arch:
@@ -11,95 +11,37 @@ for l in arch:
     #print(l,sw)
     if(sw==0):
         sw=1
-        column=list(l.split(";"))
+        column=list(l.split(","))
     else:
-        #lista=list(map(float,l.split(",")))
-        lista=list(l.split(";"))
+        lista=list(map(float,l.split(",")))
+        #lista=list(l.split(","))
         data.append(lista)
-        
 # n = nro de filas - restando la primera fila de cabecera
 n = (len(data))
 # m = nro de columnas
 m = (len(data[0]))
 #----------------------
-from sklearn import datasets
-
-datos = datasets.load_iris()
-datosX=datos.data
-datosY=datos.target
-
-#----------------------
-"""
-import numpy as np
-
-def sigmoide(x):
-    return 1/(1+np.exp(-x))
-
-#Parametros
-n_hidden = 2 #nro u. en la capa escondida
-epocas= 1000 
-taza_aprend = 0.05 #taza de aprendizaje
-
-ult_costo=None
-
-m,k = datosX.shape
-#Inicializacion de los pesos
-entrada_escondida=np.random.normal(scale=1/k**0.5,size=(k,n_hidden))
-#bias
-escondida_salida=np.random.normal(scale=1/k**0.5,size=(k,n_hidden))
-
-#Entrenamiento
-for e in range(epocas):
-    #Variables para el gradiente
-    gradiente_entrada_escondida=np.zeros(entrada_escondida.shape)
-    gradiente_escondida_salida=np.zeros(escondida_salida.shape)
-    
-    #Itera sobre el conjunto de entrenamiento
-    for x,y in zip(datosX,datosY):
-        #Pasada hacia adelante (forward pass)
-        z=sigmoide(np.matmul(x,entrada_escondida))
-        y_p=sigmoide(np.matmul(escondida_salida,z)) #prediccion
-        #Pasada hacia atras      
-        salida_error=(y-y_p)*y_p*(1-y_p)
-        
-        escondida_error=np.dot(salida_error, escondida_salida)*z*(1-z)
-        
-        gradiente_entrada_escondida+=escondida_error*x[:,None]
-        gradiente_escondida_salida+=salida_error*z
-    #Actualiza los parametros(pesos)
-    entrada_escondida+=taza_aprend*gradiente_entrada_escondida/m
-    escondida_salida+=taza_aprend*gradiente_escondida_salida/m
-    
-    if(e%(epocas/10)==0):
-        z=sigmoide(np.dot(datosX.values, entrada_escondida))
-        y_p=sigmoide(np.dot(z,escondida_salida))
-        
-        #Funcion Costo
-        costo=np.mean((y_p-datosY)**2)
-        if(ult_costo and ult_costo < costo):
-            print("Costo de Entrenamiento: ",costo," Advertencia")
-        else:
-            print("Costo de Entrenamiento: ",costo)
-        ult_costo=costo
-        
-    #Precision en lso datos de prueba
-    z=sigmoide(np.dot(datosX,entrada_escondida))
-    y_p=sigmoide(z,escondida_salida)
-    
-    predicciones=y_p>0.5
-    precision=np.mean(predicciones==datosY)
-    print(f"Precision: {precision:.3f}")
-"""
+datosX=[]
+datosY=[]
+for i in range(n):
+    datosX.append(data[i][:m-1])
+    datosY.append(data[i][m-1])
 #-----------------
 import numpy as np
+#"""
+def faescalon(x):
+    return 1 if x >= 0 else 0
 
-def sigmoid(x):
+def deriv_faescalon(x):
+    return 0  
+"""
+def faescalon(x):
   return 1 / (1 + np.exp(-x))
 
-def deriv_sigmoid(x):
-  fx = sigmoid(x)
+def deriv_faescalon(x):
+  fx = faescalon(x)
   return fx * (1 - fx)
-
+"""
 def mse_perdida(y_true, y_pred):
   return ((y_true - y_pred) ** 2).mean()
 
@@ -119,58 +61,77 @@ class redNeuronal:
     self.p9 = np.random.normal()
     self.p10 = np.random.normal()
     
+    self.p10 = np.random.normal()
+    self.p11 = np.random.normal()
+    self.p12 = np.random.normal()
+    self.p13 = np.random.normal()
+    self.p14 = np.random.normal()
+    self.p15 = np.random.normal()
+    self.p16 = np.random.normal()
+    self.p17 = np.random.normal()
+    self.p18 = np.random.normal()
     # Bias
     self.b1 = np.random.normal()
     self.b2 = np.random.normal()
     self.b3 = np.random.normal()
 
   def retroalimentacion(self, x):
-    neurona1 = sigmoid(self.p1 * x[0] + self.p2 * x[1] + self.p3 * x[2] + self.p4 * x[3] + self.b1)
-    neurona2 = sigmoid(self.p5 * x[0] + self.p6 * x[1] + self.p7 * x[2] + self.p8 * x[3]+  self.b2)
-    neurona3 = sigmoid(self.p9 * neurona1 + self.p10 * neurona2 + self.b3)
+    neurona1 = faescalon(self.p1 * x[0] + self.p2 * x[1] + self.p3 * x[2] + self.p4 * x[3] + self.p5 * x[4] + self.p6 * x[5] + self.p7 * x[6] + self.p8 * x[7] + self.b1)
+    neurona2 = faescalon(self.p9 * x[0] + self.p10 * x[1] + self.p11 * x[2] + self.p12 * x[3] + self.p13 * x[4] + self.p14 * x[5] + self.p15 * x[6] + self.p16 * x[7] + self.b2)
+    neurona3 = faescalon(self.p17 * neurona1 + self.p18 * neurona2 + self.b3)
     return neurona3
 
   def train(self, datos, y_trues):
-    taza_aprendizaje = 0.4
+    taza_aprendizaje = 0.2
     epocas = 1000 
 
     for epoca in range(epocas):
 	
       for x, y_true in zip(data, y_trues):
-        sum_neurona1 = self.p1 * x[0] + self.p2 * x[1] + self.p3 * x[2] + self.p4 * x[3] + self.b1
-        neurona1 = sigmoid(sum_neurona1)
+        sum_neurona1 = self.p1 * x[0] + self.p2 * x[1] + self.p3 * x[2] + self.p4 * x[3] + self.p5 * x[4] + self.p6 * x[5] + self.p7 * x[6] + self.p8 * x[7] + self.b1
+        neurona1 = faescalon(sum_neurona1)
 
-        sum_neurona2 = self.p5 * x[0] + self.p6 * x[1] + self.p7 * x[2] + self.p8 * x[3]+  self.b2
-        neurona2 = sigmoid(sum_neurona2)
+        sum_neurona2 = self.p9 * x[0] + self.p10 * x[1] + self.p11 * x[2] + self.p12 * x[3] + self.p13 * x[4] + self.p14 * x[5] + self.p15 * x[6] + self.p16 * x[7] + self.b2
+        neurona2 = faescalon(sum_neurona2)
 
-        sum_neurona3 = self.p9 * neurona1 + self.p10 * neurona2 + self.b3
-        neurona3 = sigmoid(sum_neurona3)
+        sum_neurona3 = self.p17 * neurona1 + self.p18 * neurona2 + self.b3
+        neurona3 = faescalon(sum_neurona3)
         y_pred = neurona3
 
         # derivada parcial
         d_L_d_ypred = -2 * (y_true - y_pred)
 
+        #actaulizacion de datos
+        
         # Neurona3
-        d_ypred_d_p9 = neurona1 * deriv_sigmoid(sum_neurona1)
-        d_ypred_d_p10 = neurona2 * deriv_sigmoid(sum_neurona1)
-        d_ypred_d_b3 = deriv_sigmoid(sum_neurona3)
+        d_ypred_d_p17 = neurona1 * deriv_faescalon(sum_neurona1)
+        d_ypred_d_p18 = neurona2 * deriv_faescalon(sum_neurona1)
+        d_ypred_d_b3 = deriv_faescalon(sum_neurona3)
 
-        d_ypred_d_neurona1 = self.p9 * deriv_sigmoid(sum_neurona3)
-        d_ypred_d_neurona2 = self.p10 * deriv_sigmoid(sum_neurona3)
+        d_ypred_d_neurona1 = self.p17 * deriv_faescalon(sum_neurona3)
+        d_ypred_d_neurona2 = self.p18 * deriv_faescalon(sum_neurona3)
 
         # Neurona1
-        d_neurona1_d_p1 = x[0] * deriv_sigmoid(sum_neurona1)
-        d_neurona1_d_p2 = x[1] * deriv_sigmoid(sum_neurona1)
-        d_neurona1_d_p3 = x[2] * deriv_sigmoid(sum_neurona1)
-        d_neurona1_d_p4 = x[3] * deriv_sigmoid(sum_neurona1)
-        d_neurona1_d_b1 = deriv_sigmoid(sum_neurona1)
+        d_neurona1_d_p1 = x[0] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p2 = x[1] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p3 = x[2] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p4 = x[3] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p5 = x[4] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p6 = x[5] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p7 = x[6] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_p8 = x[7] * deriv_faescalon(sum_neurona1)
+        d_neurona1_d_b1 = deriv_faescalon(sum_neurona1)
 
         # Neurona2
-        d_neurona2_d_p5 = x[0] * deriv_sigmoid(sum_neurona2)
-        d_neurona2_d_p6 = x[1] * deriv_sigmoid(sum_neurona2)
-        d_neurona2_d_p7 = x[2] * deriv_sigmoid(sum_neurona2)
-        d_neurona2_d_p8 = x[3] * deriv_sigmoid(sum_neurona2)
-        d_neurona2_d_b2 = deriv_sigmoid(sum_neurona2)
+        d_neurona2_d_p9 = x[0] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p10 = x[1] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p11 = x[2] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p12 = x[3] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p13 = x[4] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p14 = x[5] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p15 = x[6] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_p16 = x[7] * deriv_faescalon(sum_neurona2)
+        d_neurona2_d_b2 = deriv_faescalon(sum_neurona2)
 
         # Actualizar
         # Neurona1
@@ -178,18 +139,26 @@ class redNeuronal:
         self.p2 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p2
         self.p3 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p3
         self.p4 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p4
+        self.p5 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p5
+        self.p6 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p6
+        self.p7 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p7
+        self.p8 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_p8
         self.b1 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona1 * d_neurona1_d_b1
 
         # Neurona2
-        self.p5 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p5
-        self.p6 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p6
-        self.p7 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p7
-        self.p8 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p8
+        self.p9 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p9
+        self.p10 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p10
+        self.p11 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p11
+        self.p12 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p12
+        self.p13 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p13
+        self.p14 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p14
+        self.p15 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p15
+        self.p16 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_p16
         self.b2 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_neurona2 * d_neurona2_d_b2
 
         # Neurona3
-        self.p9 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_p9
-        self.p10 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_p10
+        self.p17 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_p17
+        self.p18 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_p18
         self.b3 -= taza_aprendizaje * d_L_d_ypred * d_ypred_d_b3
 
       # perdida por cada epoca
@@ -199,22 +168,20 @@ class redNeuronal:
         print("epoca %d perdida: %.3f" % (epoca, perdida))
         
 #------
-from sklearn import datasets
+#preparar datos
+from sklearn.model_selection import train_test_split
+entrenarX, testX, entrenarY, testY = train_test_split(datosX, datosY, test_size=0.3)
 
-datos = datasets.load_iris()
-datosX=datos.data
-datosY=datos.target
 # Entrenar
-
-#data = np.array([ [-1, -1], [2, 1], [-2, 3], [2, 2] ])
-#y_trues = np.array([ 1, 0, 0, 1 ])
-
 data = datosX
 y_trues = datosY
 
-mired = redNeuronal()
-mired.train(data, y_trues)
+red = redNeuronal()
+red.train(datosX, datosY)
+#red.train(entrenarX, entrenarY)
 
 # Predecir
-data1 = np.array([4.0,3.5,1.4,0.7])
-print("data1: %.3f" % mired.retroalimentacion(data1))
+#data1 = np.array([4.0,3.5,1.4,0.7])
+data1 = testX
+for i in data1:
+    print(f"Data {i}: {red.retroalimentacion(i):.3f}" )
